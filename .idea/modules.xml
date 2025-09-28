@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AuthService/AuthService.iml" filepath="$PROJECT_DIR$/AuthService/AuthService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TodoApp.iml" filepath="$PROJECT_DIR$/TodoApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TodoService/TodoService.iml" filepath="$PROJECT_DIR$/TodoService/TodoService.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package todo;
+
+service TodoService {
+    rpc hello(StringMessage) returns (StringMessage);
+    rpc getTodos(Id) returns (stream TodoResponse);
+    rpc addTodo(TodoRequest) returns (TodoResponse);
+    rpc updateTodo(TodoUpdateRequest) returns (StringMessage);
+    rpc deleteTodo(DeleteById) returns (StringMessage);
+}
+
+message Id {
+    string id = 1;
+}
+
+message StringMessage {
+    string info = 1;
+}
+
+message TodoRequest {
+    string todoName = 1;
+    string todoDesc = 2;
+    bool todoDone = 3;
+    string userId = 4;
+}
+
+message TodoResponse {
+    string id = 1;
+    string name = 2;
+    string todoDesc = 3;
+    bool todoDone = 4;
+    string todoCreatedAt = 5;
+    string todoUpdatedAt = 6;
+}
+
+message TodoUpdateRequest {
+    string id = 1;
+    string todoName = 2;
+    string todoDesc = 3;
+    bool todoDone = 4;
+}
+
+message DeleteById {
+    string id = 1;
+}

@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  auth_db:
+    image: postgres:latest
+    ports: 
+      - "5000:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  todo_db:
+    image: postgres:latest
+    ports: 
+      - "5001:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  todo-service:
+    build: ./TodoService
+    image: todo-service:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://todo_db:5432/db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      LOGGING_LEVEL_ROOT: warn
+    depends_on:
+      - todo_db
+
+  auth-service:
+    build: ./AuthService
+    image: auth-service:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth_db:5432/db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      LOGGING_LEVEL_ROOT: warn
+      JWT_SECRET: kebf4y3d/akjsq9sfexa1jd5d2my0uimbkqqi3ft6n22vzd6ffr3liyld9byyvncqmypfukj6cuzu434jjr9aw==
+      FRONTEND_URL: http://localhost:5173
+    depends_on:
+      - auth_db
+      - todo-service
+
